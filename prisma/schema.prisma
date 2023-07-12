@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+// sqlite
+//  provider = "sqlite"
+//  url      = "file:./dev.db"
+// mysql
+//  provider = "mysql"
+//  url      = "mysql://root:12345678@localhost:3306/dbapi"
+// mongodb
+//  provider = "mongodb"
+//  url      = "mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.10.1"
+// postgresql
+  provider = "postgresql"
+  url      = "postgresql://postgres:12345678@localhost:5432/dbapi"
+}
+
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  content   String?
+  published Boolean  @default(false)
+  viewCount Int      @default(0)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
